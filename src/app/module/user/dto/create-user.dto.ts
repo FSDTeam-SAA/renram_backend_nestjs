@@ -6,7 +6,6 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Date } from 'mongoose';
 
 export class CreateUserDto {
   @IsString()
