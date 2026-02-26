@@ -39,6 +39,10 @@ export class CreateUserDto {
   @IsOptional()
   gender?: string;
 
+  @IsEnum(['panding', 'active', 'block'])
+  @IsOptional()
+  status?: string;
+
   @IsString()
   @IsOptional()
   dateOfBirth?: string;

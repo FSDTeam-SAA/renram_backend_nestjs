@@ -52,6 +52,9 @@ export class User {
   @Prop()
   profilePicture: string;
 
+  @Prop({ enum: ['panding', 'active', 'block'], default: 'active' })
+  status: string;
+
   @Prop()
   dateOfBirth?: Date;
 

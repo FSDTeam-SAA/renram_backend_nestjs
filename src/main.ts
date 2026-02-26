@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalExceptionFilter } from './app/middlewares/globalErrors.filter';
 import { UtilsInterceptor } from './app/utils/utils.interceptor';
+import * as express from 'express';
 
 const port = config.port;
 
@@ -13,7 +14,7 @@ async function bootstrap() {
     logger: ['error', 'warn', 'debug'],
   });
   app.enableCors({
-    origin: '*',
+    origin: true,
     credentials: true,
   });
   app.use(cookieParser());
@@ -28,10 +29,9 @@ async function bootstrap() {
       },
     }),
   );
+  app.use('/api/v1/webhook', express.raw({ type: 'application/json' }));
 
-  app.setGlobalPrefix('api/v1', {
-    exclude: ['*'],
-  });
+  app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new UtilsInterceptor());
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new GlobalExceptionFilter(httpAdapterHost));
