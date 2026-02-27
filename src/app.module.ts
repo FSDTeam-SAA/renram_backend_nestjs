@@ -10,6 +10,9 @@ import { ProductModule } from './app/module/product/product.module';
 import { WebhookModule } from './app/module/webhook/webhook.module';
 import { PaymentModule } from './app/module/payment/payment.module';
 import { TreatmentModule } from './app/module/treatment/treatment.module';
+import { ContactModule } from './app/module/contact/contact.module';
+import { ReviewModule } from './app/module/review/review.module';
+import { TreatmentResponseModule } from './app/module/treatment-response/treatment-response.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { TreatmentModule } from './app/module/treatment/treatment.module';
     WebhookModule,
     PaymentModule,
     TreatmentModule,
+    ContactModule,
+    ReviewModule,
+    TreatmentResponseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
