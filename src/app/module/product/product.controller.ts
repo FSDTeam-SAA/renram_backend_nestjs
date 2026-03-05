@@ -87,6 +87,7 @@ export class ProductController {
     @Req() req: Request,
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     const userId = req.user!.id;
 
@@ -94,6 +95,7 @@ export class ProductController {
       userId,
       id,
       updateProductDto,
+      files,
     );
 
     return {
