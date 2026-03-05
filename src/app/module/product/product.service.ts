@@ -124,7 +124,8 @@ export class ProductService {
       const productImages = await Promise.all(
         files.map((file) => fileUpload.uploadToCloudinary(file)),
       );
-      updateProductDto.image = productImages.map((img) => img.url);
+      const newImage = productImages.map((img) => img.url);
+      updateProductDto.image = [...(product.image || []), ...newImage];
     }
 
     const result = await this.productModel.findByIdAndUpdate(
