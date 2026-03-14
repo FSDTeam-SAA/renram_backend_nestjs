@@ -7,10 +7,12 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { WebhookService } from './webhook.service';
 
 @Controller('webhook')
+@ApiTags('Webhook')
 export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}
 

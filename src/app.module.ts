@@ -14,6 +14,7 @@ import { ContactModule } from './app/module/contact/contact.module';
 import { ReviewModule } from './app/module/review/review.module';
 import { TreatmentResponseModule } from './app/module/treatment-response/treatment-response.module';
 import { DashboardModule } from './app/module/dashboard/dashboard.module';
+import { TreatmentBenefitModule } from './app/module/treatment-benefit/treatment-benefit.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DashboardModule } from './app/module/dashboard/dashboard.module';
     ReviewModule,
     TreatmentResponseModule,
     DashboardModule,
+    TreatmentBenefitModule,
   ],
   controllers: [AppController],
   providers: [AppService],

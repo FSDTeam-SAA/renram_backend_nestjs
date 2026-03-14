@@ -7,10 +7,10 @@ export type TreatmentResponseDocument = HydratedDocument<TreatmentResponse>;
 export class TreatmentResponse {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Treatment',
+    ref: 'TreatmentBenefit',
     required: true,
   })
-  treatment: Types.ObjectId;
+  treatmentBenefit: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

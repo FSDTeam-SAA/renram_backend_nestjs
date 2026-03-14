@@ -1,4 +1,10 @@
-import { IsArray, IsMongoId, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsMongoId,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class AnswerDto {
@@ -10,6 +16,12 @@ class AnswerDto {
 }
 
 export class CreateTreatmentResponseDto {
+  @IsOptional()
+  @IsMongoId()
+  treatmentBenefit?: string;
+
+  // Keep accepting the legacy field name to avoid breaking existing clients.
+  @IsOptional()
   @IsMongoId()
   treatment: string;
 
