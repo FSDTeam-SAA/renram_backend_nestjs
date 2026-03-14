@@ -11,6 +11,7 @@ import {
   Req,
   Put,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { TreatmentBenefitService } from './treatment-benefit.service';
 import { CreateTreatmentBenefitDto } from './dto/create-treatment-benefit.dto';
 import { UpdateTreatmentBenefitDto } from './dto/update-treatment-benefit.dto';
@@ -19,6 +20,7 @@ import type { Request } from 'express';
 import pick from 'src/app/helper/pick';
 
 @Controller('treatment-benefit')
+@ApiTags('Treatment Benefit')
 export class TreatmentBenefitController {
   constructor(
     private readonly treatmentBenefitService: TreatmentBenefitService,
@@ -26,6 +28,7 @@ export class TreatmentBenefitController {
 
   @Post()
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async createTreatmentBenefit(
     @Req() req: Request,
@@ -73,6 +76,7 @@ export class TreatmentBenefitController {
 
   @Put(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async updateTreatmentBenefit(
     @Req() req: Request,
@@ -93,6 +97,7 @@ export class TreatmentBenefitController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async deleteTreatmentBenefit(@Req() req: Request, @Param('id') id: string) {
     const result = await this.treatmentBenefitService.deleteTreatmentBenefit(

@@ -13,6 +13,13 @@ import {
   UploadedFiles,
   Put,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -23,11 +30,50 @@ import AuthGuard from 'src/app/middlewares/auth.guard';
 import pick from 'src/app/helper/pick';
 
 @Controller('product')
+@ApiTags('Product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Create product with multiple image upload' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['name', 'description', 'price'],
+      properties: {
+        name: { type: 'string', example: 'Hair Growth Oil' },
+        description: {
+          type: 'string',
+          example: 'Supports healthy hair growth and scalp care',
+        },
+        whatWillYouGet: {
+          type: 'string',
+          example: '1 bottle oil, usage guide',
+        },
+        price: { type: 'number', example: 1200 },
+        size: {
+          oneOf: [
+            {
+              type: 'array',
+              items: { type: 'string' },
+              example: ['100ml', '200ml'],
+            },
+            {
+              type: 'string',
+              example: '100ml,200ml',
+            },
+          ],
+        },
+        images: {
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
+        },
+      },
+    },
+  })
   @UseInterceptors(FilesInterceptor('images', 10, fileUpload.uploadConfig))
   @HttpCode(HttpStatus.CREATED)
   async createProduct(
@@ -80,6 +126,43 @@ export class ProductController {
 
   @Put(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Update product with optional multiple images' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', example: 'Hair Growth Oil' },
+        description: {
+          type: 'string',
+          example: 'Updated product description',
+        },
+        whatWillYouGet: {
+          type: 'string',
+          example: '1 bottle oil, usage guide',
+        },
+        price: { type: 'number', example: 1200 },
+        size: {
+          oneOf: [
+            {
+              type: 'array',
+              items: { type: 'string' },
+              example: ['100ml', '200ml'],
+            },
+            {
+              type: 'string',
+              example: '100ml,200ml',
+            },
+          ],
+        },
+        images: {
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
+        },
+      },
+    },
+  })
   @UseInterceptors(FilesInterceptor('images', 10, fileUpload.uploadConfig))
   @HttpCode(HttpStatus.OK)
   async updateProduct(
@@ -105,6 +188,7 @@ export class ProductController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async deleteProduct(@Param('id') id: string) {
     const result = await this.productService.deleteProduct(id);

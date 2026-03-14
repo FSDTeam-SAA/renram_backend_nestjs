@@ -6,17 +6,20 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { DashboardService } from './dashboard.service';
 import AuthGuard from 'src/app/middlewares/auth.guard';
 
 export type RangeType = 'week' | 'year';
 
 @Controller('dashboard')
+@ApiTags('Dashboard')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('overview')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async getDashboardData() {
     const result = await this.dashboardService.getDashboardData();
@@ -29,6 +32,7 @@ export class DashboardController {
 
   @Get('sales-report')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async getSalesReport(
     @Query('range') range: RangeType,

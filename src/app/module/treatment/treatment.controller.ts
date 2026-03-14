@@ -11,6 +11,7 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { TreatmentService } from './treatment.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
 import { UpdateTreatmentDto } from './dto/update-treatment.dto';
@@ -19,11 +20,13 @@ import type { Request } from 'express';
 import pick from 'src/app/helper/pick';
 
 @Controller('treatment')
+@ApiTags('Treatment')
 export class TreatmentController {
   constructor(private readonly treatmentService: TreatmentService) {}
 
   @Post()
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async createTreatment(
     @Req() req: Request,
@@ -67,6 +70,7 @@ export class TreatmentController {
 
   @Put(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async updateTreatment(
     @Req() req: Request,
@@ -87,6 +91,7 @@ export class TreatmentController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async deleteTreatment(@Req() req: Request, @Param('id') id: string) {
     const result = await this.treatmentService.deleteTreatment(

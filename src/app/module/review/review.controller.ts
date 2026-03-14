@@ -12,6 +12,7 @@ import {
   Req,
   Put,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -20,11 +21,13 @@ import type { Request } from 'express';
 import pick from 'src/app/helper/pick';
 
 @Controller('review')
+@ApiTags('Review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post('product/:productId')
   @UseGuards(AuthGuard('user'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.CREATED)
   async createReview(
     @Req() req: Request,
@@ -74,6 +77,7 @@ export class ReviewController {
 
   @Put(':id')
   @UseGuards(AuthGuard('user', 'admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async updateReview(
     @Req() req: Request,
@@ -94,6 +98,7 @@ export class ReviewController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('user', 'admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async deleteReview(@Req() req: Request, @Param('id') id: string) {
     const userId = req.user!.id;

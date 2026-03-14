@@ -10,6 +10,7 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import AuthGuard from 'src/app/middlewares/auth.guard';
@@ -17,6 +18,7 @@ import type { Request } from 'express';
 import pick from 'src/app/helper/pick';
 
 @Controller('contact')
+@ApiTags('Contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
@@ -33,6 +35,7 @@ export class ContactController {
 
   @Get()
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async getAllContact(@Req() req: Request) {
     const filters = pick(req.query, [
@@ -64,6 +67,7 @@ export class ContactController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   deleteContact(@Param('id') id: string) {
     const result = this.contactService.deleteContact(id);

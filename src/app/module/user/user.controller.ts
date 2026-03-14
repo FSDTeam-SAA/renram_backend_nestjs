@@ -13,6 +13,7 @@ import {
   Req,
   Put,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,11 +24,13 @@ import type { Request } from 'express';
 import pick from 'src/app/helper/pick';
 
 @Controller('user')
+@ApiTags('User')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('profilePicture', fileUpload.uploadConfig))
   async createUser(
@@ -44,6 +47,7 @@ export class UserController {
 
   @Get('all-users')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async findAllUsers(@Req() req: Request) {
     const filters = pick(req.query, [
@@ -68,6 +72,7 @@ export class UserController {
 
   @Get('profile')
   @UseGuards(AuthGuard('user', 'admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async findProfile(@Req() req: Request) {
     const result = await this.userService.getProfile(req.user!.id);
@@ -79,6 +84,7 @@ export class UserController {
 
   @Put('profile')
   @UseGuards(AuthGuard('user', 'admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('profilePicture', fileUpload.uploadConfig))
   async updateProfile(
@@ -109,6 +115,7 @@ export class UserController {
 
   @Put(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('profilePicture', fileUpload.uploadConfig))
   async updateUser(
@@ -130,6 +137,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('admin'))
+  @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.OK)
   async deleteUser(@Param('id') id: string) {
     const result = await this.userService.deleteUser(id);
