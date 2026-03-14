@@ -20,9 +20,9 @@ export class TreatmentQuestionDto {
   answare?: string;
 }
 
-export class CreateTreatmentDto {
+export class CreateTreatmentBenefitDto {
   @IsString()
-  name: string;
+  title: string;
 
   @IsString()
   category: string;

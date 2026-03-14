@@ -29,7 +29,7 @@ export class TreatmentResponseController {
     );
 
     return {
-      message: 'Treatment submitted successfully',
+      message: 'Treatment benefit submitted successfully',
       data: result,
     };
   }
