@@ -21,6 +21,11 @@ export class TreatmentResponseController {
     private readonly treatmentResponseService: TreatmentResponseService,
   ) {}
 
+  @Get('all-treatment-names-and-treatment-benefit-names')
+  async allTreatmentNamesAndTreatmentBenefinitNames() {
+    return this.treatmentResponseService.allTreatmentNamesAndTreatmentBenefinitNames();
+  }
+
   @Post('preview')
   @HttpCode(HttpStatus.OK)
   async preview(@Body() dto: CreateTreatmentResponseDto) {
